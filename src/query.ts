@@ -28,24 +28,3 @@ export class QueryClient {
 		});
 	}
 }
-
-const qc = new QueryClient({
-	httpClient: new HttpClient({
-		baseURL: "http://localhost:3000",
-	}),
-});
-
-const query = qc.makeQuery({
-	queryFn: ({ client }) => {
-		return client
-			.get<Array<{ id: string }>>("/home")
-			.pipe(map((res) => res.flatMap((v) => v.id)));
-	},
-});
-
-query.pipe(take(1)).subscribe(
-	(obs) => {
-		console.log(obs);
-	},
-	(err) => console.error(err),
-);

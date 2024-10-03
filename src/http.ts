@@ -1,11 +1,12 @@
 import type { Axios, CreateAxiosDefaults } from "axios";
 import axios from "axios";
-import { Observable, defer, map, tap } from "rxjs";
+import { type Observable, defer, map, tap } from "rxjs";
 
 type MutateHttpClientFunction = <T>(
 	url: string,
 	body: Record<string, unknown>,
 	queryParams: Record<string, unknown>,
+	// biome-ignore lint/suspicious/noConfusingVoidType:I don't care enough
 ) => Observable<T | void>;
 
 interface BaseHttpClient {
@@ -30,10 +31,7 @@ export class HttpClient implements BaseHttpClient {
 			this.client.get<T>(url, {
 				params: queryParams,
 			}),
-		).pipe(
-			map((res) => res.data),
-			tap((res) => console.log({ res })),
-		);
+		).pipe(map((res) => res.data));
 	}
 
 	post<T>(
